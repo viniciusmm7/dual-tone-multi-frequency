@@ -30,12 +30,16 @@ pip install -r requirements.txt
 ```
 #### Windows cmd
 ```bash
+python -m venv env
 env\Scripts\activate.bat
+pip install -r requirements.txt
 ```
 
 #### Windows Power Shell
 ```bash
+python -m venv env
 env\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
 <!-- ### 2. Run emitter and receiver
