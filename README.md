@@ -21,11 +21,21 @@ Ok, but how is this possible? To save you from a ton of math, it will use the [F
 
 ___
 ## How to run it
-### 1. Init Enviroment (Linux/MacOS)
+### 1. Init Enviroment
+#### Linux/MacOS
 ```bash
 python3 -m venv env
 source env/bin/activate
 pip install -r requirements.txt
+```
+#### Windows cmd
+```bash
+env\Scripts\activate.bat
+```
+
+#### Windows Power Shell
+```bash
+env\Scripts\Activate.ps1
 ```
 
 <!-- ### 2. Run emitter and receiver
