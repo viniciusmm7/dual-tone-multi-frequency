@@ -24,14 +24,18 @@ def main():
        
     #voce importou a bilioteca sounddevice como, por exemplo, sd. entao
     # os seguintes parametros devem ser setados:
-    sd.default.samplerate = #taxa de amostragem
-    sd.default.channels = 2 #numCanais # o numero de canais, tipicamente são 2. Placas com dois canais. Se ocorrer problemas pode tentar com 1. No caso de 2 canais, ao gravar um audio, terá duas listas
-    duration =  tempo # #tempo em segundos que ira aquisitar o sinal acustico captado pelo mic
+    sd.default.samplerate = 44100 #taxa de amostragem
+    sd.default.channels = 2 # o numero de canais, tipicamente são 2. Placas com dois canais. Se ocorrer problemas pode tentar com 1. No caso de 2 canais, ao gravar um audio, terá duas listas
+    duration = 1 #tempo em segundos que ira aquisitar o sinal acustico captado pelo mic
     
     #calcule o numero de amostras "numAmostras" que serao feitas (numero de aquisicoes) durante a gracação. Para esse cálculo você deverá utilizar a taxa de amostragem e o tempo de gravação
 
     #faca um print na tela dizendo que a captacao comecará em n segundos. e entao 
     #use um time.sleep para a espera
+    print('A captação começará em 2 segundos')
+    time.sleep(2)
+    print('\n==================')
+    print('A gravação começou')
    
     #Ao seguir, faca um print informando que a gravacao foi inicializada
 
