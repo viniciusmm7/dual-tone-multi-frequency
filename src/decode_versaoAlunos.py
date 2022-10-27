@@ -30,6 +30,9 @@ def main():
     
     #calcule o numero de amostras "numAmostras" que serao feitas (numero de aquisicoes) durante a gracação. Para esse cálculo você deverá utilizar a taxa de amostragem e o tempo de gravação
 
+    numAmostras = duration * sd.default.samplerate * 2
+    freqDeAmostragem = sd.default.samplerate
+
     #faca um print na tela dizendo que a captacao comecará em n segundos. e entao 
     #use um time.sleep para a espera
     print('A captação começará em 2 segundos')
@@ -40,17 +43,18 @@ def main():
     #Ao seguir, faca um print informando que a gravacao foi inicializada
 
     #para gravar, utilize
-    audio = sd.rec(int(numAmostras), freqDeAmostragem, channels=1)
+    audio = sd.rec(int(numAmostras), freqDeAmostragem, channels=2)
     sd.wait()
     print("...     FIM")
 
-
     #analise sua variavel "audio". pode ser um vetor com 1 ou 2 colunas, lista, isso dependerá so seu sistema, drivers etc...
     #extraia a parte que interessa da gravação (as amostras) gravando em uma variável "dados". Isso porque a variável audio pode conter dois canais e outas informações). 
+    y = [i[1] for i in audio]
+    fs = freqDeAmostragem / duration
     
     # use a funcao linspace e crie o vetor tempo. Um instante correspondente a cada amostra!
   
-    # plot do áudio gravado (dados) vs tempo! Não plote todos os pontos, pois verá apenas uma mancha (freq altas) . 
+    # plot do áudio gravado (dados) vs tempo! Não plote todos os pontos, pois verá apenas uma mancha (freq altas) .
        
     ## Calcule e plote o Fourier do sinal audio. como saida tem-se a amplitude e as frequencias
     xf, yf = signal.calcFFT(y, fs)
