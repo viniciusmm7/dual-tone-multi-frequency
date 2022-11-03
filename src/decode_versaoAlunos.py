@@ -17,33 +17,30 @@ def todB(s):
 
 def main():
 
-    #*****************************instruções********************************
- 
-    #declare um objeto da classe da sua biblioteca de apoio (cedida)   
-    # algo como:
-    signal = Signal() 
-       
-    #voce importou a bilioteca sounddevice como, por exemplo, sd. entao
-    # os seguintes parametros devem ser setados:
-    sd.default.samplerate = 44100 #taxa de amostragem
-    sd.default.channels = 2 # o numero de canais, tipicamente são 2. Placas com dois canais. Se ocorrer problemas pode tentar com 1. No caso de 2 canais, ao gravar um audio, terá duas listas
-    duration = 1 #tempo em segundos que ira aquisitar o sinal acustico captado pelo mic
-    
-    #calcule o numero de amostras "numAmostras" que serao feitas (numero de aquisicoes) durante a gracação. Para esse cálculo você deverá utilizar a taxa de amostragem e o tempo de gravação
+    sounds = {
+        '1': [697, 1209], '2': [697, 1336], '3': [697, 1477], 'A': [697, 1633],
+        '4': [770, 1209], '5': [770, 1336], '6': [770, 1477], 'B': [770, 1633],
+        '7': [852, 1209], '8': [852, 1336], '9': [852, 1477], 'C': [852, 1633],
+        'X': [941, 1209], '0': [941, 1336], '#': [941, 1477], 'D': [941, 1633]
+    }
 
+    signal = Signal() 
+    sd.default.samplerate = 44100
+    sd.default.channels = 2
+    duration = 1
+    
     numAmostras = duration * sd.default.samplerate
     freqDeAmostragem = sd.default.samplerate
 
-    #faca um print na tela dizendo que a captacao comecará em n segundos. e entao 
-    #use um time.sleep para a espera
-    print('A captação começará em 2 segundos')
-    time.sleep(2)
+    print('A captação começará em 3 segundos')
+    time.sleep(1)
+    print('2')
+    time.sleep(1)
+    print('1')
+    time.sleep(1)
     print('\n==================')
-    print('A gravação começou')
-   
-    #Ao seguir, faca um print informando que a gravacao foi inicializada
 
-    #para gravar, utilize
+    print('A gravação começou')
     audio = sd.rec(int(numAmostras), freqDeAmostragem, channels=2)
     sd.wait()
     print("...     FIM")
@@ -53,29 +50,29 @@ def main():
     # min = 697
     # max = 1633
 
-    dados = [dados[0] for dados in audio]
-    # dados1 = [dados[1] for dados in audio]
-
-    # y = [x + y for x, y in zip(dados0, dados1)]
-    # t = np.linspace(0.0, duration, len(y))
-    # print(t)
-    # fs = 1/t
-
+    canal1 = []
+    canal2 = []
+    for canal in audio:
+        canal1.append(canal[0])
+        canal2.append(canal[1])
+        
     # use a funcao linspace e crie o vetor tempo. Um instante correspondente a cada amostra!
-    tempo = np.linspace(0.0, duration, len(dados))
-    # tempo1 = np.linspace(0.0, duration, len(dados1))
+    tempo1 = np.linspace(0.0, duration, len(canal1))
+    tempo2 = np.linspace(0.0, duration, len(canal2))
 
     # plot do áudio gravado (dados) vs tempo! Não plote todos os pontos, pois verá apenas uma mancha (freq altas) .
-    plt.plot(tempo, dados)
+    plt.plot(tempo1, canal1)
+    plt.plot(tempo2, canal2)
     plt.title('Frequências no tempo')
-    # plt.plot(tempo1, dados1)
-    # plt.legend(['Canal 1', 'Canal 2'])
+    plt.legend(['Canal 1', 'Canal 2'])
     plt.xlabel('Tempo (s)')
     plt.ylabel('Frequência (hz)')
     plt.show()
 
     # Calcule e plote o Fourier do sinal audio. como saida tem-se a amplitude e as frequencias
-    xf, yf = signal.calcFFT(dados, freqDeAmostragem)
+    xf, yf = signal.calcFFT(canal1, freqDeAmostragem)
+    signal.plotFFT(xf, yf)
+    xf, yf = signal.calcFFT(canal2, freqDeAmostragem)
     signal.plotFFT(xf, yf)
     # print(yf)
     
