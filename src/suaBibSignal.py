@@ -8,17 +8,38 @@ from scipy import signal as window
 
 
 class signalMeu:
+    
     def __init__(self):
         self.init = 0
+    
 
     def __init__(self):
         self.init = 0
 
-    def generateSin(self,f, A, t,fs):
+    #gera a senoid
+    def senoid(self,f, A, t,fs):
         n = t*fs
         x = np.linspace(0.0, t, n)
         s = A*np.sin(f*x*2*np.pi)
         return s
+    
+    #Define a tecla precionada
+    def dtmf(self,tecla,DTMF):
+        freq_1= DTMF[tecla][0]
+        freq_2= DTMF[tecla][1]
+        return freq_1,freq_2
+
+    #Gera o sinal
+    def signal(self,s_1,s_2):
+        return s_1+s_2
+
+    #Simula a tecla do telefone 
+    def discar(self,DTMF):
+        while True:
+            tecla = input("Qual numero digital: ")
+            if tecla in DTMF.keys():
+                break
+        return tecla
  
     def calcFFT(self, signal, fs):
         # https://docs.scipy.org/doc/scipy/reference/tutorial/fftpack.html

@@ -37,91 +37,60 @@ def main():
     # Grave o som com seu celular ou qualquer outro microfone. Cuidado, algumas placas de som não gravam sons gerados por elas mesmas. (Isso evita microfonia).
     
     # construa o gráfico do sinal emitido e o gráfico da transformada de Fourier. Cuidado. Como as frequencias sao relativamente altas, voce deve plotar apenas alguns pontos (alguns periodos) para conseguirmos ver o sinal
-    
+    DTMF =  {
+        '1' : [697,1209],
+        '2' : [679,1336],
+        '3' : [679,1477],
+        '4' : [770,1209],
+        '5' : [770,1336],
+        '6' : [770,1477],
+        '7' : [852,1209],
+        '8' : [852,1336],
+        '9' : [852,1477],
+        '0' : [941,1336],
+        'x' : [941,1209],
+        '#' : [941,1477],
+        'a' : [697,1633],
+        'b' : [770,1633],
+        'c' : [852,1633],
+        'd' : [941,1633]
+        }
 
     print("Inicializando encoder")
     print("Aguardando usuário")
     print("Gerando Tons base")
     
-    DTMF ={
-    '1' : [697,1209],
-    '2' : [679,1336],
-    '3' : [679,1477],
-    '4' : [770,1209],
-    '5' : [770,1336],
-    '6' : [770,1477],
-    '7' : [852,1209],
-    '8' : [852,1336],
-    '9' : [852,1477],
-    '0' : [941,1336],
-    'x' : [941,1209],
-    '#' : [941,1477],
-    'a' : [697,1633],
-    'b' : [770,1633],
-    'c' : [852,1633],
-    'd' : [941,1633]
-    }
-    keys = {
-        "C":[264,2*264],
-        "C#":[277.2,277.2*2],
-        "D":[297,2*297],
-        "D#":[311.1,311.1*2],
-        'E':[330,660],
-        'F':[352,253*2],
-        "F#":[370,370*2],
-        'G':[396,396*2],
-        "G#":[415.3,415.3*2],
-        'A':[440,880],
-        "A#":[466.2,466.2*2],
-        'B':[495,495*2]
-    }
-
-
-
+   
+ 
     SINAL = signalMeu()
-    while True:
-        tecla = input("Qual numero digital: ")
-        if tecla in DTMF.keys():
-            break
+    
 
-    fs=44100
+    fs=44100 
+    A = 1
+    t = 2 #Tempo
 
-    freq_1= DTMF[tecla][0]
-    freq_2= DTMF[tecla][1]
+    tecla = SINAL.discar(DTMF)
 
-    t = 2
-    sinal_1 = SINAL.generateSin(freq_1, 0.3, t, fs)
-    sinal_2  = SINAL.generateSin(freq_2, 0.3, t, fs)
+    freq_1,freq_2 = SINAL.dtmf(tecla,DTMF)
+    s_1 = SINAL.senoid(freq_1,A,t,fs)
+    s_2 = SINAL.senoid(freq_2,A,t,fs)
+    sinal = SINAL.signal(s_1,s_2)
 
-    do = SINAL.generateSin(keys['C'][1], 0.3, t, fs)
-    do_s = SINAL.generateSin(keys['C#'][1], 0.3, t, fs)
-    re = SINAL.generateSin(keys['D'][1], 0.3, t, fs)
-    re_s = SINAL.generateSin(keys['D#'][1], 0.3, t, fs)
-    mi = SINAL.generateSin(keys['E'][1], 0.3, t, fs)
-    fa = SINAL.generateSin(keys['F'][1], 0.3, t, fs)
-    fa_s = SINAL.generateSin(keys['F#'][1], 0.3, t, fs)
-    sol = SINAL.generateSin(keys['G'][1], 0.3, t, fs)
-    sol_s = SINAL.generateSin(keys['G#'][1], 0.3, t, fs)
-    la = SINAL.generateSin(keys['A'][1], 0.3, t, fs)
-    la_s = SINAL.generateSin(keys['A#'][1], 0.3, t, fs)
-    si = SINAL.generateSin(keys['B'][1], 0.3, t, fs)
+    graf=np.linspace(0.0, t, int(fs/100))
+    
 
-
-    do_maior = do + mi + sol
-    fa_maior = fa + la + do
-    sol_m = sol + si + re
-
-
-    tom = sinal_1+sinal_2
     print("Executando as senoides (emitindo o som)")
-   # print("Gerando Tom referente ao símbolo : {}".format(NUM))
+    print("Gerando Tom referente ao símbolo : {}".format(tecla))
+    
 
-    sd.play(tom,fs)
-    # Exibe gráficos
+    #sd.play(sinal,fs)
+    #Exibe gráficos
+    plt.plot(graf, sinal[0:441])
+    SINAL.plotFFT( sinal, fs)
     plt.show()
     # aguarda fim do audio
     sd.wait()
-    SINAL.plotFFT( tom, fs)
+    
     
 
 if __name__ == "__main__":
